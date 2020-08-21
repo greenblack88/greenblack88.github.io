@@ -7,7 +7,7 @@
 </head>
 <body>
 <div>
-	<h3 class="file">8 /Code/000090351/CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp fclose 70</h3>
+	<h3 class="file">[Library/API Call] 8 /home/user/Code/000090351/CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp fclose 70</h3>
 	<pre class="line-numbers" data-line="46,48,49,50,51,55,56,58,60,61,70"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
@@ -177,7 +177,7 @@ int main(int argc, char * argv[])
 </code></pre>
 </div>
 <div>
-	<h3 class="file">9 /Code/000090351/CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp strlen 55</h3>
+	<h3 class="file">[Library/API Call] 9 /home/user/Code/000090351/CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp strlen 55</h3>
 	<pre class="line-numbers" data-line="46,48,49,50,51,55,58,64,68,78"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
@@ -347,7 +347,7 @@ int main(int argc, char * argv[])
 </code></pre>
 </div>
 <div>
-	<h3 class="file">13 /Code/000090351/CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp fopen 60</h3>
+	<h3 class="file">[Library/API Call] 13 /home/user/Code/000090351/CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp fopen 60</h3>
 	<pre class="line-numbers" data-line="46,48,49,50,51,55,56,58,60,61,64,68,70,78"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
@@ -517,7 +517,7 @@ int main(int argc, char * argv[])
 </code></pre>
 </div>
 <div>
-	<h3 class="file">14 /Code/000090351/CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp fgets 64</h3>
+	<h3 class="file">[Library/API Call] 14 /home/user/Code/000090351/CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp fgets 64</h3>
 	<pre class="line-numbers" data-line="46,48,49,50,51,55,56,58,60,61,64,68,78"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__char_file_ifstream_04.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
@@ -687,11 +687,939 @@ int main(int argc, char * argv[])
 </code></pre>
 </div>
 <div>
-	<h3 class="file">72 /Code/000061959/CWE114_Process_Control__w32_char_connect_socket_22b.c socket 71</h3>
-	<pre class="line-numbers" data-line="30,32,33,34,36,47,49,53,56,57,60,64,71,72,76,77,78,79,80,87,88,93,95,96,98,100,101,103,106,107,109,119"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE114_Process_Control__w32_char_connect_socket_22b.c
+	<h3 class="file">[Array Usage] 56 /home/user/Code/000090350/CWE23_Relative_Path_Traversal__char_file_ifstream_03.cpp dataBuffer 44</h3>
+	<pre class="line-numbers" data-line="40,42,43,44,49,52,58,62,72"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE23_Relative_Path_Traversal__char_file_ifstream_03.cpp
+Label Definition File: CWE23_Relative_Path_Traversal.label.xml
+Template File: sources-sink-03.tmpl.cpp
+*/
+/*
+ * @description
+ * CWE: 23 Relative Path Traversal
+ * BadSource: file Read input from a file
+ * GoodSource: Use a fixed file name
+ * Sink: ifstream
+ *    BadSink : Open the file named in data using ifstream::open()
+ * Flow Variant: 03 Control flow: if(5==5) and if(5!=5)
+ *
+ * */
+
+#include "std_testcase.h"
+
+#ifdef _WIN32
+#define BASEPATH "c:\\temp\\"
+#else
+#include <wchar.h>
+#define BASEPATH "/tmp/"
+#endif
+
+#ifdef _WIN32
+#define FILENAME "C:\\temp\\file.txt"
+#else
+#define FILENAME "/tmp/file.txt"
+#endif
+
+#include <fstream>
+using namespace std;
+
+namespace CWE23_Relative_Path_Traversal__char_file_ifstream_03
+{
+
+#ifndef OMITBAD
+
+void bad()
+{
+    char * data;
+    char dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(5==5)
+    {
+        {
+            /* Read input from a file */
+            size_t dataLen = strlen(data);
+            FILE * pFile;
+            /* if there is room in data, attempt to read the input from a file */
+            if (FILENAME_MAX-dataLen > 1)
+            {
+                pFile = fopen(FILENAME, "r");
+                if (pFile != NULL)
+                {
+                    /* POTENTIAL FLAW: Read data from a file */
+                    if (fgets(data+dataLen, (int)(FILENAME_MAX-dataLen), pFile) == NULL)
+                    {
+                        printLine("fgets() failed");
+                        /* Restore NUL terminator if fgets fails */
+                        data[dataLen] = '\0';
+                    }
+                    fclose(pFile);
+                }
+            }
+        }
+    }
+    {
+        ifstream inputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        inputFile.open((char *)data);
+        inputFile.close();
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B1() - use goodsource and badsink by changing the 5==5 to 5!=5 */
+static void goodG2B1()
+{
+    char * data;
+    char dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(5!=5)
+    {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine("Benign, fixed string");
+    }
+    else
+    {
+        /* FIX: Use a fixed file name */
+        strcat(data, "file.txt");
+    }
+    {
+        ifstream inputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        inputFile.open((char *)data);
+        inputFile.close();
+    }
+}
+
+/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if statement */
+static void goodG2B2()
+{
+    char * data;
+    char dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(5==5)
+    {
+        /* FIX: Use a fixed file name */
+        strcat(data, "file.txt");
+    }
+    {
+        ifstream inputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        inputFile.open((char *)data);
+        inputFile.close();
+    }
+}
+
+void good()
+{
+    goodG2B1();
+    goodG2B2();
+}
+
+#endif /* OMITGOOD */
+
+} /* close namespace */
+
+/* Below is the main(). It is only used when building this testcase on
+   its own for testing or for building a binary to use in testing binary
+   analysis tools. It is not used when compiling all the testcases as one
+   application, which is how source code analysis tools are tested. */
+
+#ifdef INCLUDEMAIN
+
+using namespace CWE23_Relative_Path_Traversal__char_file_ifstream_03; /* so that we can use good and bad easily */
+
+int main(int argc, char * argv[])
+{
+    /* seed randomness */
+    srand( (unsigned)time(NULL) );
+#ifndef OMITGOOD
+    printLine("Calling good()...");
+    good();
+    printLine("Finished good()");
+#endif /* OMITGOOD */
+#ifndef OMITBAD
+    printLine("Calling bad()...");
+    bad();
+    printLine("Finished bad()");
+#endif /* OMITBAD */
+    return 0;
+}
+
+#endif
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 31 /home/user/Code/000062054/CWE114_Process_Control__w32_char_environment_21.c dataBuffer 59</h3>
+	<pre class="line-numbers" data-line="55,57,58,59,61,36,42,48,52,66,67,69"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE114_Process_Control__w32_char_environment_21.c
 Label Definition File: CWE114_Process_Control__w32.label.xml
-Template File: sources-sink-22b.tmpl.c
+Template File: sources-sink-21.tmpl.c
+*/
+/*
+ * @description
+ * CWE: 114 Process Control
+ * BadSource: environment Read input from an environment variable
+ * GoodSource: Hard code the full pathname to the library
+ * Sink:
+ *    BadSink : Load a dynamic link library
+ * Flow Variant: 21 Control flow: Flow controlled by value of a static global variable. All functions contained in one file.
+ *
+ * */
+
+#include "std_testcase.h"
+
+#include <wchar.h>
+
+#define ENV_VARIABLE "ADD"
+
+#ifdef _WIN32
+#define GETENV getenv
+#else
+#define GETENV getenv
+#endif
+
+#include <windows.h>
+
+#ifndef OMITBAD
+
+/* The static variable below is used to drive control flow in the source function */
+static int badStatic = 0;
+
+static char * badSource(char * data)
+{
+    if(badStatic)
+    {
+        {
+            /* Append input from an environment variable to data */
+            size_t dataLen = strlen(data);
+            char * environment = GETENV(ENV_VARIABLE);
+            /* If there is data in the environment variable */
+            if (environment != NULL)
+            {
+                /* POTENTIAL FLAW: Read data from an environment variable */
+                strncat(data+dataLen, environment, 100-dataLen-1);
+            }
+        }
+    }
+    return data;
+}
+
+void CWE114_Process_Control__w32_char_environment_21_bad()
+{
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    badStatic = 1; /* true */
+    data = badSource(data);
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* The static variables below are used to drive control flow in the source functions. */
+static int goodG2B1Static = 0;
+static int goodG2B2Static = 0;
+
+/* goodG2B1() - use goodsource and badsink by setting the static variable to false instead of true */
+static char * goodG2B1Source(char * data)
+{
+    if(goodG2B1Static)
+    {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine("Benign, fixed string");
+    }
+    else
+    {
+        /* FIX: Specify the full pathname for the library */
+        strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
+    }
+    return data;
+}
+
+static void goodG2B1()
+{
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    goodG2B1Static = 0; /* false */
+    data = goodG2B1Source(data);
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
+}
+
+/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if in the source function */
+static char * goodG2B2Source(char * data)
+{
+    if(goodG2B2Static)
+    {
+        /* FIX: Specify the full pathname for the library */
+        strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
+    }
+    return data;
+}
+
+static void goodG2B2()
+{
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    goodG2B2Static = 1; /* true */
+    data = goodG2B2Source(data);
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
+}
+
+void CWE114_Process_Control__w32_char_environment_21_good()
+{
+    goodG2B1();
+    goodG2B2();
+}
+
+#endif /* OMITGOOD */
+
+/* Below is the main(). It is only used when building this testcase on
+ * its own for testing or for building a binary to use in testing binary
+ * analysis tools. It is not used when compiling all the testcases as one
+ * application, which is how source code analysis tools are tested.
+ */
+
+#ifdef INCLUDEMAIN
+
+int main(int argc, char * argv[])
+{
+    /* seed randomness */
+    srand( (unsigned)time(NULL) );
+#ifndef OMITGOOD
+    printLine("Calling good()...");
+    CWE114_Process_Control__w32_char_environment_21_good();
+    printLine("Finished good()");
+#endif /* OMITGOOD */
+#ifndef OMITBAD
+    printLine("Calling bad()...");
+    CWE114_Process_Control__w32_char_environment_21_bad();
+    printLine("Finished bad()");
+#endif /* OMITBAD */
+    return 0;
+}
+
+#endif
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 122 /home/user/Code/000091363/CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08.cpp dataBuffer 59</h3>
+	<pre class="line-numbers" data-line="55,57,58,59,64,70,77"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08.cpp
+Label Definition File: CWE23_Relative_Path_Traversal.label.xml
+Template File: sources-sink-08.tmpl.cpp
+*/
+/*
+ * @description
+ * CWE: 23 Relative Path Traversal
+ * BadSource: environment Read input from an environment variable
+ * GoodSource: Use a fixed file name
+ * Sink: ofstream
+ *    BadSink : Open the file named in data using ofstream::open()
+ * Flow Variant: 08 Control flow: if(staticReturnsTrue()) and if(staticReturnsFalse())
+ *
+ * */
+
+#include "std_testcase.h"
+
+#ifdef _WIN32
+#define BASEPATH L"c:\\temp\\"
+#else
+#include <wchar.h>
+#define BASEPATH L"/tmp/"
+#endif
+
+#define ENV_VARIABLE L"ADD"
+
+#ifdef _WIN32
+#define GETENV _wgetenv
+#else
+#define GETENV getenv
+#endif
+
+#include <fstream>
+using namespace std;
+
+/* The two function below always return the same value, so a tool
+   should be able to identify that calls to the functions will always
+   return a fixed value. */
+static int staticReturnsTrue()
+{
+    return 1;
+}
+
+static int staticReturnsFalse()
+{
+    return 0;
+}
+
+namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08
+{
+
+#ifndef OMITBAD
+
+void bad()
+{
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(staticReturnsTrue())
+    {
+        {
+            /* Append input from an environment variable to data */
+            size_t dataLen = wcslen(data);
+            wchar_t * environment = GETENV(ENV_VARIABLE);
+            /* If there is data in the environment variable */
+            if (environment != NULL)
+            {
+                /* POTENTIAL FLAW: Read data from an environment variable */
+                wcsncat(data+dataLen, environment, FILENAME_MAX-dataLen-1);
+            }
+        }
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B1() - use goodsource and badsink by changing the staticReturnsTrue() to staticReturnsFalse() */
+static void goodG2B1()
+{
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(staticReturnsFalse())
+    {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine("Benign, fixed string");
+    }
+    else
+    {
+        /* FIX: Use a fixed file name */
+        wcscat(data, L"file.txt");
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
+    }
+}
+
+/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if statement */
+static void goodG2B2()
+{
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(staticReturnsTrue())
+    {
+        /* FIX: Use a fixed file name */
+        wcscat(data, L"file.txt");
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
+    }
+}
+
+void good()
+{
+    goodG2B1();
+    goodG2B2();
+}
+
+#endif /* OMITGOOD */
+
+} /* close namespace */
+
+/* Below is the main(). It is only used when building this testcase on
+   its own for testing or for building a binary to use in testing binary
+   analysis tools. It is not used when compiling all the testcases as one
+   application, which is how source code analysis tools are tested. */
+
+#ifdef INCLUDEMAIN
+
+using namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08; /* so that we can use good and bad easily */
+
+int main(int argc, char * argv[])
+{
+    /* seed randomness */
+    srand( (unsigned)time(NULL) );
+#ifndef OMITGOOD
+    printLine("Calling good()...");
+    good();
+    printLine("Finished good()");
+#endif /* OMITGOOD */
+#ifndef OMITBAD
+    printLine("Calling bad()...");
+    bad();
+    printLine("Finished bad()");
+#endif /* OMITBAD */
+    return 0;
+}
+
+#endif
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 128 /home/user/Code/000091364/CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_09.cpp dataBuffer 46</h3>
+	<pre class="line-numbers" data-line="42,44,45,46,51,57,64"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_09.cpp
+Label Definition File: CWE23_Relative_Path_Traversal.label.xml
+Template File: sources-sink-09.tmpl.cpp
+*/
+/*
+ * @description
+ * CWE: 23 Relative Path Traversal
+ * BadSource: environment Read input from an environment variable
+ * GoodSource: Use a fixed file name
+ * Sink: ofstream
+ *    BadSink : Open the file named in data using ofstream::open()
+ * Flow Variant: 09 Control flow: if(GLOBAL_CONST_TRUE) and if(GLOBAL_CONST_FALSE)
+ *
+ * */
+
+#include "std_testcase.h"
+
+#ifdef _WIN32
+#define BASEPATH L"c:\\temp\\"
+#else
+#include <wchar.h>
+#define BASEPATH L"/tmp/"
+#endif
+
+#define ENV_VARIABLE L"ADD"
+
+#ifdef _WIN32
+#define GETENV _wgetenv
+#else
+#define GETENV getenv
+#endif
+
+#include <fstream>
+using namespace std;
+
+namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_09
+{
+
+#ifndef OMITBAD
+
+void bad()
+{
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(GLOBAL_CONST_TRUE)
+    {
+        {
+            /* Append input from an environment variable to data */
+            size_t dataLen = wcslen(data);
+            wchar_t * environment = GETENV(ENV_VARIABLE);
+            /* If there is data in the environment variable */
+            if (environment != NULL)
+            {
+                /* POTENTIAL FLAW: Read data from an environment variable */
+                wcsncat(data+dataLen, environment, FILENAME_MAX-dataLen-1);
+            }
+        }
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B1() - use goodsource and badsink by changing the GLOBAL_CONST_TRUE to GLOBAL_CONST_FALSE */
+static void goodG2B1()
+{
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(GLOBAL_CONST_FALSE)
+    {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine("Benign, fixed string");
+    }
+    else
+    {
+        /* FIX: Use a fixed file name */
+        wcscat(data, L"file.txt");
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
+    }
+}
+
+/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if statement */
+static void goodG2B2()
+{
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(GLOBAL_CONST_TRUE)
+    {
+        /* FIX: Use a fixed file name */
+        wcscat(data, L"file.txt");
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
+    }
+}
+
+void good()
+{
+    goodG2B1();
+    goodG2B2();
+}
+
+#endif /* OMITGOOD */
+
+} /* close namespace */
+
+/* Below is the main(). It is only used when building this testcase on
+   its own for testing or for building a binary to use in testing binary
+   analysis tools. It is not used when compiling all the testcases as one
+   application, which is how source code analysis tools are tested. */
+
+#ifdef INCLUDEMAIN
+
+using namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_09; /* so that we can use good and bad easily */
+
+int main(int argc, char * argv[])
+{
+    /* seed randomness */
+    srand( (unsigned)time(NULL) );
+#ifndef OMITGOOD
+    printLine("Calling good()...");
+    good();
+    printLine("Finished good()");
+#endif /* OMITGOOD */
+#ifndef OMITBAD
+    printLine("Calling bad()...");
+    bad();
+    printLine("Finished bad()");
+#endif /* OMITBAD */
+    return 0;
+}
+
+#endif
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 4 /home/user/Code/000064137/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b.c source 30</h3>
+	<pre class="line-numbers" data-line="25,28,29,30,32,33,34"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b.c
+Label Definition File: CWE121_Stack_Based_Buffer_Overflow__CWE805.string.label.xml
+Template File: sources-sink-51b.tmpl.c
+*/
+/*
+ * @description
+ * CWE: 121 Stack Based Buffer Overflow
+ * BadSource:  Set data pointer to the bad buffer
+ * GoodSource: Set data pointer to the good buffer
+ * Sink: memcpy
+ *    BadSink : Copy string to data using memcpy
+ * Flow Variant: 51 Data flow: data passed as an argument from one function to another in different source files
+ *
+ * */
+
+#include "std_testcase.h"
+
+#include <wchar.h>
+
+/* all the sinks are the same, we just want to know where the hit originated if a tool flags one */
+
+#ifndef OMITBAD
+
+void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b_badSink(char * data)
+{
+    {
+        char source[100];
+        memset(source, 'C', 100-1); /* fill with 'C's */
+        source[100-1] = '\0'; /* null terminate */
+        /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
+        memcpy(data, source, 100*sizeof(char));
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        printLine(data);
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B uses the GoodSource with the BadSink */
+void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b_goodG2BSink(char * data)
+{
+    {
+        char source[100];
+        memset(source, 'C', 100-1); /* fill with 'C's */
+        source[100-1] = '\0'; /* null terminate */
+        /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
+        memcpy(data, source, 100*sizeof(char));
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        printLine(data);
+    }
+}
+
+#endif /* OMITGOOD */
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 5 /home/user/Code/000064137/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b.c source 29</h3>
+	<pre class="line-numbers" data-line="25,28,29,30,32,33,34"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b.c
+Label Definition File: CWE121_Stack_Based_Buffer_Overflow__CWE805.string.label.xml
+Template File: sources-sink-51b.tmpl.c
+*/
+/*
+ * @description
+ * CWE: 121 Stack Based Buffer Overflow
+ * BadSource:  Set data pointer to the bad buffer
+ * GoodSource: Set data pointer to the good buffer
+ * Sink: memcpy
+ *    BadSink : Copy string to data using memcpy
+ * Flow Variant: 51 Data flow: data passed as an argument from one function to another in different source files
+ *
+ * */
+
+#include "std_testcase.h"
+
+#include <wchar.h>
+
+/* all the sinks are the same, we just want to know where the hit originated if a tool flags one */
+
+#ifndef OMITBAD
+
+void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b_badSink(char * data)
+{
+    {
+        char source[100];
+        memset(source, 'C', 100-1); /* fill with 'C's */
+        source[100-1] = '\0'; /* null terminate */
+        /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
+        memcpy(data, source, 100*sizeof(char));
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        printLine(data);
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B uses the GoodSource with the BadSink */
+void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b_goodG2BSink(char * data)
+{
+    {
+        char source[100];
+        memset(source, 'C', 100-1); /* fill with 'C's */
+        source[100-1] = '\0'; /* null terminate */
+        /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
+        memcpy(data, source, 100*sizeof(char));
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        printLine(data);
+    }
+}
+
+#endif /* OMITGOOD */
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 7 /home/user/Code/000064137/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b.c source 48</h3>
+	<pre class="line-numbers" data-line="43,46,47,48,50,51,52"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b.c
+Label Definition File: CWE121_Stack_Based_Buffer_Overflow__CWE805.string.label.xml
+Template File: sources-sink-51b.tmpl.c
+*/
+/*
+ * @description
+ * CWE: 121 Stack Based Buffer Overflow
+ * BadSource:  Set data pointer to the bad buffer
+ * GoodSource: Set data pointer to the good buffer
+ * Sink: memcpy
+ *    BadSink : Copy string to data using memcpy
+ * Flow Variant: 51 Data flow: data passed as an argument from one function to another in different source files
+ *
+ * */
+
+#include "std_testcase.h"
+
+#include <wchar.h>
+
+/* all the sinks are the same, we just want to know where the hit originated if a tool flags one */
+
+#ifndef OMITBAD
+
+void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b_badSink(char * data)
+{
+    {
+        char source[100];
+        memset(source, 'C', 100-1); /* fill with 'C's */
+        source[100-1] = '\0'; /* null terminate */
+        /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
+        memcpy(data, source, 100*sizeof(char));
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        printLine(data);
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B uses the GoodSource with the BadSink */
+void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b_goodG2BSink(char * data)
+{
+    {
+        char source[100];
+        memset(source, 'C', 100-1); /* fill with 'C's */
+        source[100-1] = '\0'; /* null terminate */
+        /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
+        memcpy(data, source, 100*sizeof(char));
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        printLine(data);
+    }
+}
+
+#endif /* OMITGOOD */
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 8 /home/user/Code/000064137/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b.c source 47</h3>
+	<pre class="line-numbers" data-line="43,46,47,48,50,51,52"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b.c
+Label Definition File: CWE121_Stack_Based_Buffer_Overflow__CWE805.string.label.xml
+Template File: sources-sink-51b.tmpl.c
+*/
+/*
+ * @description
+ * CWE: 121 Stack Based Buffer Overflow
+ * BadSource:  Set data pointer to the bad buffer
+ * GoodSource: Set data pointer to the good buffer
+ * Sink: memcpy
+ *    BadSink : Copy string to data using memcpy
+ * Flow Variant: 51 Data flow: data passed as an argument from one function to another in different source files
+ *
+ * */
+
+#include "std_testcase.h"
+
+#include <wchar.h>
+
+/* all the sinks are the same, we just want to know where the hit originated if a tool flags one */
+
+#ifndef OMITBAD
+
+void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b_badSink(char * data)
+{
+    {
+        char source[100];
+        memset(source, 'C', 100-1); /* fill with 'C's */
+        source[100-1] = '\0'; /* null terminate */
+        /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
+        memcpy(data, source, 100*sizeof(char));
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        printLine(data);
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B uses the GoodSource with the BadSink */
+void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_51b_goodG2BSink(char * data)
+{
+    {
+        char source[100];
+        memset(source, 'C', 100-1); /* fill with 'C's */
+        source[100-1] = '\0'; /* null terminate */
+        /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
+        memcpy(data, source, 100*sizeof(char));
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        printLine(data);
+    }
+}
+
+#endif /* OMITGOOD */
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 37 /home/user/Code/000061941/CWE114_Process_Control__w32_char_connect_socket_02.c dataBuffer 49</h3>
+	<pre class="line-numbers" data-line="45,47,48,49,61,88,89,94,96,97,99,101,102,104,124,125,127"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE114_Process_Control__w32_char_connect_socket_02.c
+Label Definition File: CWE114_Process_Control__w32.label.xml
+Template File: sources-sink-02.tmpl.c
 */
 /*
  * @description
@@ -700,7 +1628,7 @@ Template File: sources-sink-22b.tmpl.c
  * GoodSource: Hard code the full pathname to the library
  * Sink:
  *    BadSink : Load a dynamic link library
- * Flow Variant: 22 Control flow: Flow controlled by value of a global variable. Sink functions are in a separate file from sources.
+ * Flow Variant: 02 Control flow: if(1) and if(0)
  *
  * */
 
@@ -729,14 +1657,15 @@ Template File: sources-sink-22b.tmpl.c
 #define TCP_PORT 27015
 #define IP_ADDRESS "127.0.0.1"
 
+
 #ifndef OMITBAD
 
-/* The global variable below is used to drive control flow in the source function */
-extern int CWE114_Process_Control__w32_char_connect_socket_22_badGlobal;
-
-char * CWE114_Process_Control__w32_char_connect_socket_22_badSource(char * data)
+void CWE114_Process_Control__w32_char_connect_socket_02_bad()
 {
-    if(CWE114_Process_Control__w32_char_connect_socket_22_badGlobal)
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    if(1)
     {
         {
 #ifdef _WIN32
@@ -806,21 +1735,34 @@ char * CWE114_Process_Control__w32_char_connect_socket_22_badSource(char * data)
 #endif
         }
     }
-    return data;
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
 }
 
 #endif /* OMITBAD */
 
 #ifndef OMITGOOD
 
-/* The global variables below are used to drive control flow in the source functions. */
-extern int CWE114_Process_Control__w32_char_connect_socket_22_goodG2B1Global;
-extern int CWE114_Process_Control__w32_char_connect_socket_22_goodG2B2Global;
-
-/* goodG2B1() - use goodsource and badsink by setting the static variable to false instead of true */
-char * CWE114_Process_Control__w32_char_connect_socket_22_goodG2B1Source(char * data)
+/* goodG2B1() - use goodsource and badsink by changing the 1 to 0 */
+static void goodG2B1()
 {
-    if(CWE114_Process_Control__w32_char_connect_socket_22_goodG2B1Global)
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    if(0)
     {
         /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
         printLine("Benign, fixed string");
@@ -830,141 +1772,587 @@ char * CWE114_Process_Control__w32_char_connect_socket_22_goodG2B1Source(char * 
         /* FIX: Specify the full pathname for the library */
         strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
     }
-    return data;
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
 }
 
-/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if in the source function */
-char * CWE114_Process_Control__w32_char_connect_socket_22_goodG2B2Source(char * data)
+/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if statement */
+static void goodG2B2()
 {
-    if(CWE114_Process_Control__w32_char_connect_socket_22_goodG2B2Global)
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    if(1)
     {
         /* FIX: Specify the full pathname for the library */
         strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
     }
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
+}
+
+void CWE114_Process_Control__w32_char_connect_socket_02_good()
+{
+    goodG2B1();
+    goodG2B2();
+}
+
+#endif /* OMITGOOD */
+
+/* Below is the main(). It is only used when building this testcase on
+ * its own for testing or for building a binary to use in testing binary
+ * analysis tools. It is not used when compiling all the testcases as one
+ * application, which is how source code analysis tools are tested.
+ */
+
+#ifdef INCLUDEMAIN
+
+int main(int argc, char * argv[])
+{
+    /* seed randomness */
+    srand( (unsigned)time(NULL) );
+#ifndef OMITGOOD
+    printLine("Calling good()...");
+    CWE114_Process_Control__w32_char_connect_socket_02_good();
+    printLine("Finished good()");
+#endif /* OMITGOOD */
+#ifndef OMITBAD
+    printLine("Calling bad()...");
+    CWE114_Process_Control__w32_char_connect_socket_02_bad();
+    printLine("Finished bad()");
+#endif /* OMITBAD */
+    return 0;
+}
+
+#endif
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Array Usage] 87 /home/user/Code/000063088/CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_17.c source 49</h3>
+	<pre class="line-numbers" data-line="28,30,31,32,34,38,39,42,43,44,47,49,51"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_17.c
+Label Definition File: CWE121_Stack_Based_Buffer_Overflow__CWE193.label.xml
+Template File: sources-sink-17.tmpl.c
+*/
+/*
+ * @description
+ * CWE: 121 Stack Based Buffer Overflow
+ * BadSource:  Point data to a buffer that does not have space for a NULL terminator
+ * GoodSource: Point data to a buffer that includes space for a NULL terminator
+ * Sink: loop
+ *    BadSink : Copy array to data using a loop
+ * Flow Variant: 17 Control flow: for loops
+ *
+ * */
+
+#include "std_testcase.h"
+
+#ifndef _WIN32
+#include <wchar.h>
+#endif
+
+/* MAINTENANCE NOTE: The length of this string should equal the 10 */
+#define SRC_STRING "AAAAAAAAAA"
+
+#ifndef OMITBAD
+
+void CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_17_bad()
+{
+    int i;
+    char * data;
+    char * dataBadBuffer = (char *)ALLOCA((10)*sizeof(char));
+    char * dataGoodBuffer = (char *)ALLOCA((10+1)*sizeof(char));
+    for(i = 0; i < 1; i++)
+    {
+        /* FLAW: Set a pointer to a buffer that does not leave room for a NULL terminator when performing
+         * string copies in the sinks  */
+        data = dataBadBuffer;
+        data[0] = '\0'; /* null terminate */
+    }
+    {
+        char source[10+1] = SRC_STRING;
+        size_t i, sourceLen;
+        sourceLen = strlen(source);
+        /* Copy length + 1 to include NUL terminator from source */
+        /* POTENTIAL FLAW: data may not have enough space to hold source */
+        for (i = 0; i < sourceLen + 1; i++)
+        {
+            data[i] = source[i];
+        }
+        printLine(data);
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B() - use goodsource and badsink by changing the conditions on the for statements */
+static void goodG2B()
+{
+    int h;
+    char * data;
+    char * dataBadBuffer = (char *)ALLOCA((10)*sizeof(char));
+    char * dataGoodBuffer = (char *)ALLOCA((10+1)*sizeof(char));
+    for(h = 0; h < 1; h++)
+    {
+        /* FIX: Set a pointer to a buffer that leaves room for a NULL terminator when performing
+         * string copies in the sinks  */
+        data = dataGoodBuffer;
+        data[0] = '\0'; /* null terminate */
+    }
+    {
+        char source[10+1] = SRC_STRING;
+        size_t i, sourceLen;
+        sourceLen = strlen(source);
+        /* Copy length + 1 to include NUL terminator from source */
+        /* POTENTIAL FLAW: data may not have enough space to hold source */
+        for (i = 0; i < sourceLen + 1; i++)
+        {
+            data[i] = source[i];
+        }
+        printLine(data);
+    }
+}
+
+void CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_17_good()
+{
+    goodG2B();
+}
+
+#endif /* OMITGOOD */
+
+/* Below is the main(). It is only used when building this testcase on
+ * its own for testing or for building a binary to use in testing binary
+ * analysis tools. It is not used when compiling all the testcases as one
+ * application, which is how source code analysis tools are tested.
+ */
+
+#ifdef INCLUDEMAIN
+
+int main(int argc, char * argv[])
+{
+    /* seed randomness */
+    srand( (unsigned)time(NULL) );
+#ifndef OMITGOOD
+    printLine("Calling good()...");
+    CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_17_good();
+    printLine("Finished good()");
+#endif /* OMITGOOD */
+#ifndef OMITBAD
+    printLine("Calling bad()...");
+    CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_17_bad();
+    printLine("Finished bad()");
+#endif /* OMITBAD */
+    return 0;
+}
+
+#endif
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Pointer Usage] 1 /home/user/Code/000061941/CWE114_Process_Control__w32_char_connect_socket_02.c recvResult = recv ( connectSocket , ( char * ) ( data + dataLen ) , sizeof ( char ) * ( 100 - dataLen - 1 ) , 0 ) 88</h3>
+	<pre class="line-numbers" data-line="45,47,48,49,50,54,57,58,61,65,72,73,77,78,79,80,81,88,89,94,96,97,99,101,102,104,107,124,125,127"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE114_Process_Control__w32_char_connect_socket_02.c
+Label Definition File: CWE114_Process_Control__w32.label.xml
+Template File: sources-sink-02.tmpl.c
+*/
+/*
+ * @description
+ * CWE: 114 Process Control
+ * BadSource: connect_socket Read data using a connect socket (client side)
+ * GoodSource: Hard code the full pathname to the library
+ * Sink:
+ *    BadSink : Load a dynamic link library
+ * Flow Variant: 02 Control flow: if(1) and if(0)
+ *
+ * */
+
+#include "std_testcase.h"
+
+#include <wchar.h>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <windows.h>
+#include <direct.h>
+#pragma comment(lib, "ws2_32") /* include ws2_32.lib when linking */
+#define CLOSE_SOCKET closesocket
+#else /* NOT _WIN32 */
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#define INVALID_SOCKET -1
+#define SOCKET_ERROR -1
+#define CLOSE_SOCKET close
+#define SOCKET int
+#endif
+
+#define TCP_PORT 27015
+#define IP_ADDRESS "127.0.0.1"
+
+
+#ifndef OMITBAD
+
+void CWE114_Process_Control__w32_char_connect_socket_02_bad()
+{
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    if(1)
+    {
+        {
+#ifdef _WIN32
+            WSADATA wsaData;
+            int wsaDataInit = 0;
+#endif
+            int recvResult;
+            struct sockaddr_in service;
+            char *replace;
+            SOCKET connectSocket = INVALID_SOCKET;
+            size_t dataLen = strlen(data);
+            do
+            {
+#ifdef _WIN32
+                if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
+                {
+                    break;
+                }
+                wsaDataInit = 1;
+#endif
+                /* POTENTIAL FLAW: Read data using a connect socket */
+                connectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+                if (connectSocket == INVALID_SOCKET)
+                {
+                    break;
+                }
+                memset(&service, 0, sizeof(service));
+                service.sin_family = AF_INET;
+                service.sin_addr.s_addr = inet_addr(IP_ADDRESS);
+                service.sin_port = htons(TCP_PORT);
+                if (connect(connectSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
+                {
+                    break;
+                }
+                /* Abort on error or the connection was closed, make sure to recv one
+                 * less char than is in the recv_buf in order to append a terminator */
+                /* Abort on error or the connection was closed */
+                recvResult = recv(connectSocket, (char *)(data + dataLen), sizeof(char) * (100 - dataLen - 1), 0);
+                if (recvResult == SOCKET_ERROR || recvResult == 0)
+                {
+                    break;
+                }
+                /* Append null terminator */
+                data[dataLen + recvResult / sizeof(char)] = '\0';
+                /* Eliminate CRLF */
+                replace = strchr(data, '\r');
+                if (replace)
+                {
+                    *replace = '\0';
+                }
+                replace = strchr(data, '\n');
+                if (replace)
+                {
+                    *replace = '\0';
+                }
+            }
+            while (0);
+            if (connectSocket != INVALID_SOCKET)
+            {
+                CLOSE_SOCKET(connectSocket);
+            }
+#ifdef _WIN32
+            if (wsaDataInit)
+            {
+                WSACleanup();
+            }
+#endif
+        }
+    }
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
+}
+
+#endif /* OMITBAD */
+
+#ifndef OMITGOOD
+
+/* goodG2B1() - use goodsource and badsink by changing the 1 to 0 */
+static void goodG2B1()
+{
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    if(0)
+    {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine("Benign, fixed string");
+    }
+    else
+    {
+        /* FIX: Specify the full pathname for the library */
+        strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
+    }
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
+}
+
+/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if statement */
+static void goodG2B2()
+{
+    char * data;
+    char dataBuffer[100] = "";
+    data = dataBuffer;
+    if(1)
+    {
+        /* FIX: Specify the full pathname for the library */
+        strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
+    }
+    {
+        HMODULE hModule;
+        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
+         * replace his own file with the intended library */
+        hModule = LoadLibraryA(data);
+        if (hModule != NULL)
+        {
+            FreeLibrary(hModule);
+            printLine("Library loaded and freed successfully");
+        }
+        else
+        {
+            printLine("Unable to load library");
+        }
+    }
+}
+
+void CWE114_Process_Control__w32_char_connect_socket_02_good()
+{
+    goodG2B1();
+    goodG2B2();
+}
+
+#endif /* OMITGOOD */
+
+/* Below is the main(). It is only used when building this testcase on
+ * its own for testing or for building a binary to use in testing binary
+ * analysis tools. It is not used when compiling all the testcases as one
+ * application, which is how source code analysis tools are tested.
+ */
+
+#ifdef INCLUDEMAIN
+
+int main(int argc, char * argv[])
+{
+    /* seed randomness */
+    srand( (unsigned)time(NULL) );
+#ifndef OMITGOOD
+    printLine("Calling good()...");
+    CWE114_Process_Control__w32_char_connect_socket_02_good();
+    printLine("Finished good()");
+#endif /* OMITGOOD */
+#ifndef OMITBAD
+    printLine("Calling bad()...");
+    CWE114_Process_Control__w32_char_connect_socket_02_bad();
+    printLine("Finished bad()");
+#endif /* OMITBAD */
+    return 0;
+}
+
+#endif
+</code></pre>
+</div>
+<div>
+	<h3 class="file">[Arithmetic Expression] 130 /home/user/Code/000103258/CWE427_Uncontrolled_Search_Path_Element__wchar_t_file_21.c data 76</h3>
+	<pre class="line-numbers" data-line="68,70,71,72,74,39,41,45,46,48,50,51,54,58,65,76"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE427_Uncontrolled_Search_Path_Element__wchar_t_file_21.c
+Label Definition File: CWE427_Uncontrolled_Search_Path_Element.label.xml
+Template File: sources-sink-21.tmpl.c
+*/
+/*
+ * @description
+ * CWE: 427 Uncontrolled Search Path Element
+ * BadSource: file Read input from a file
+ * GoodSource: Use a hardcoded path
+ * Sink:
+ *    BadSink : Set the environment variable
+ * Flow Variant: 21 Control flow: Flow controlled by value of a static global variable. All functions contained in one file.
+ *
+ * */
+
+#include "std_testcase.h"
+
+#include <wchar.h>
+#ifdef _WIN32
+#define NEW_PATH L"%SystemRoot%\\system32"
+#define PUTENV _wputenv
+#else
+#define NEW_PATH L"/bin"
+#define PUTENV putenv
+#endif
+
+#ifdef _WIN32
+#define FILENAME "C:\\temp\\file.txt"
+#else
+#define FILENAME "/tmp/file.txt"
+#endif
+
+#ifndef OMITBAD
+
+/* The static variable below is used to drive control flow in the source function */
+static int badStatic = 0;
+
+static wchar_t * badSource(wchar_t * data)
+{
+    if(badStatic)
+    {
+        {
+            /* Read input from a file */
+            size_t dataLen = wcslen(data);
+            FILE * pFile;
+            /* if there is room in data, attempt to read the input from a file */
+            if (250-dataLen > 1)
+            {
+                pFile = fopen(FILENAME, "r");
+                if (pFile != NULL)
+                {
+                    /* POTENTIAL FLAW: Read data from a file */
+                    if (fgetws(data+dataLen, (int)(250-dataLen), pFile) == NULL)
+                    {
+                        printLine("fgetws() failed");
+                        /* Restore NUL terminator if fgetws fails */
+                        data[dataLen] = L'\0';
+                    }
+                    fclose(pFile);
+                }
+            }
+        }
+    }
     return data;
 }
 
-#endif /* OMITGOOD */
-</code></pre>
-</div>
-<div>
-	<h3 class="file">75 /Code/000061959/CWE114_Process_Control__w32_char_connect_socket_22a.c LoadLibraryA 41</h3>
-	<pre class="line-numbers" data-line="30,32,33,34,36,47,49,53,56,57,60,64,71,72,76,77,78,79,80,87,88,93,106,119,38,41,42,44"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE114_Process_Control__w32_char_connect_socket_22a.c
-Label Definition File: CWE114_Process_Control__w32.label.xml
-Template File: sources-sink-22a.tmpl.c
-*/
-/*
- * @description
- * CWE: 114 Process Control
- * BadSource: connect_socket Read data using a connect socket (client side)
- * GoodSource: Hard code the full pathname to the library
- * Sink:
- *    BadSink : Load a dynamic link library
- * Flow Variant: 22 Control flow: Flow controlled by value of a global variable. Sink functions are in a separate file from sources.
- *
- * */
-
-#include "std_testcase.h"
-
-#include <wchar.h>
-
-#include <windows.h>
-
-#ifndef OMITBAD
-
-/* The global variable below is used to drive control flow in the source function */
-int CWE114_Process_Control__w32_char_connect_socket_22_badGlobal = 0;
-
-char * CWE114_Process_Control__w32_char_connect_socket_22_badSource(char * data);
-
-void CWE114_Process_Control__w32_char_connect_socket_22_bad()
+void CWE427_Uncontrolled_Search_Path_Element__wchar_t_file_21_bad()
 {
-    char * data;
-    char dataBuffer[100] = "";
+    wchar_t * data;
+    wchar_t dataBuffer[250] = L"PATH=";
     data = dataBuffer;
-    CWE114_Process_Control__w32_char_connect_socket_22_badGlobal = 1; /* true */
-    data = CWE114_Process_Control__w32_char_connect_socket_22_badSource(data);
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
+    badStatic = 1; /* true */
+    data = badSource(data);
+    /* POTENTIAL FLAW: Set a new environment variable with a path that is possibly insecure */
+    PUTENV(data);
 }
 
 #endif /* OMITBAD */
 
 #ifndef OMITGOOD
 
-/* The global variables below are used to drive control flow in the source functions. */
-int CWE114_Process_Control__w32_char_connect_socket_22_goodG2B1Global = 0;
-int CWE114_Process_Control__w32_char_connect_socket_22_goodG2B2Global = 0;
+/* The static variables below are used to drive control flow in the source functions. */
+static int goodG2B1Static = 0;
+static int goodG2B2Static = 0;
 
 /* goodG2B1() - use goodsource and badsink by setting the static variable to false instead of true */
-char * CWE114_Process_Control__w32_char_connect_socket_22_goodG2B1Source(char * data);
+static wchar_t * goodG2B1Source(wchar_t * data)
+{
+    if(goodG2B1Static)
+    {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine("Benign, fixed string");
+    }
+    else
+    {
+        /* FIX: Set the path as the "system" path */
+        wcscat(data, NEW_PATH);
+    }
+    return data;
+}
 
 static void goodG2B1()
 {
-    char * data;
-    char dataBuffer[100] = "";
+    wchar_t * data;
+    wchar_t dataBuffer[250] = L"PATH=";
     data = dataBuffer;
-    CWE114_Process_Control__w32_char_connect_socket_22_goodG2B1Global = 0; /* false */
-    data = CWE114_Process_Control__w32_char_connect_socket_22_goodG2B1Source(data);
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
+    goodG2B1Static = 0; /* false */
+    data = goodG2B1Source(data);
+    /* POTENTIAL FLAW: Set a new environment variable with a path that is possibly insecure */
+    PUTENV(data);
 }
 
 /* goodG2B2() - use goodsource and badsink by reversing the blocks in the if in the source function */
-char * CWE114_Process_Control__w32_char_connect_socket_22_goodG2B2Source(char * data);
+static wchar_t * goodG2B2Source(wchar_t * data)
+{
+    if(goodG2B2Static)
+    {
+        /* FIX: Set the path as the "system" path */
+        wcscat(data, NEW_PATH);
+    }
+    return data;
+}
 
 static void goodG2B2()
 {
-    char * data;
-    char dataBuffer[100] = "";
+    wchar_t * data;
+    wchar_t dataBuffer[250] = L"PATH=";
     data = dataBuffer;
-    CWE114_Process_Control__w32_char_connect_socket_22_goodG2B2Global = 1; /* true */
-    data = CWE114_Process_Control__w32_char_connect_socket_22_goodG2B2Source(data);
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
+    goodG2B2Static = 1; /* true */
+    data = goodG2B2Source(data);
+    /* POTENTIAL FLAW: Set a new environment variable with a path that is possibly insecure */
+    PUTENV(data);
 }
 
-void CWE114_Process_Control__w32_char_connect_socket_22_good()
+void CWE427_Uncontrolled_Search_Path_Element__wchar_t_file_21_good()
 {
     goodG2B1();
     goodG2B2();
@@ -986,12 +2374,12 @@ int main(int argc, char * argv[])
     srand( (unsigned)time(NULL) );
 #ifndef OMITGOOD
     printLine("Calling good()...");
-    CWE114_Process_Control__w32_char_connect_socket_22_good();
+    CWE427_Uncontrolled_Search_Path_Element__wchar_t_file_21_good();
     printLine("Finished good()");
 #endif /* OMITGOOD */
 #ifndef OMITBAD
     printLine("Calling bad()...");
-    CWE114_Process_Control__w32_char_connect_socket_22_bad();
+    CWE427_Uncontrolled_Search_Path_Element__wchar_t_file_21_bad();
     printLine("Finished bad()");
 #endif /* OMITBAD */
     return 0;
@@ -1001,57 +2389,85 @@ int main(int argc, char * argv[])
 </code></pre>
 </div>
 <div>
-	<h3 class="file">87 /Code/000062055/CWE114_Process_Control__w32_char_environment_22a.c LoadLibraryA 41</h3>
-	<pre class="line-numbers" data-line="30,32,33,34,36,34,36,40,41,43,46,50,38,41,42,44"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE114_Process_Control__w32_char_environment_22a.c
-Label Definition File: CWE114_Process_Control__w32.label.xml
-Template File: sources-sink-22a.tmpl.c
+	<h3 class="file">[Arithmetic Expression] 241 /home/user/Code/000091363/CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08.cpp environment 70</h3>
+	<pre class="line-numbers" data-line="55,57,58,59,60,40,42,64,65,67,70,77"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08.cpp
+Label Definition File: CWE23_Relative_Path_Traversal.label.xml
+Template File: sources-sink-08.tmpl.cpp
 */
 /*
  * @description
- * CWE: 114 Process Control
+ * CWE: 23 Relative Path Traversal
  * BadSource: environment Read input from an environment variable
- * GoodSource: Hard code the full pathname to the library
- * Sink:
- *    BadSink : Load a dynamic link library
- * Flow Variant: 22 Control flow: Flow controlled by value of a global variable. Sink functions are in a separate file from sources.
+ * GoodSource: Use a fixed file name
+ * Sink: ofstream
+ *    BadSink : Open the file named in data using ofstream::open()
+ * Flow Variant: 08 Control flow: if(staticReturnsTrue()) and if(staticReturnsFalse())
  *
  * */
 
 #include "std_testcase.h"
 
+#ifdef _WIN32
+#define BASEPATH L"c:\\temp\\"
+#else
 #include <wchar.h>
+#define BASEPATH L"/tmp/"
+#endif
 
-#include <windows.h>
+#define ENV_VARIABLE L"ADD"
+
+#ifdef _WIN32
+#define GETENV _wgetenv
+#else
+#define GETENV getenv
+#endif
+
+#include <fstream>
+using namespace std;
+
+/* The two function below always return the same value, so a tool
+   should be able to identify that calls to the functions will always
+   return a fixed value. */
+static int staticReturnsTrue()
+{
+    return 1;
+}
+
+static int staticReturnsFalse()
+{
+    return 0;
+}
+
+namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08
+{
 
 #ifndef OMITBAD
 
-/* The global variable below is used to drive control flow in the source function */
-int CWE114_Process_Control__w32_char_environment_22_badGlobal = 0;
-
-char * CWE114_Process_Control__w32_char_environment_22_badSource(char * data);
-
-void CWE114_Process_Control__w32_char_environment_22_bad()
+void bad()
 {
-    char * data;
-    char dataBuffer[100] = "";
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
     data = dataBuffer;
-    CWE114_Process_Control__w32_char_environment_22_badGlobal = 1; /* true */
-    data = CWE114_Process_Control__w32_char_environment_22_badSource(data);
+    if(staticReturnsTrue())
     {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
         {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
+            /* Append input from an environment variable to data */
+            size_t dataLen = wcslen(data);
+            wchar_t * environment = GETENV(ENV_VARIABLE);
+            /* If there is data in the environment variable */
+            if (environment != NULL)
+            {
+                /* POTENTIAL FLAW: Read data from an environment variable */
+                wcsncat(data+dataLen, environment, FILENAME_MAX-dataLen-1);
+            }
         }
-        else
-        {
-            printLine("Unable to load library");
-        }
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
     }
 }
 
@@ -1059,65 +2475,50 @@ void CWE114_Process_Control__w32_char_environment_22_bad()
 
 #ifndef OMITGOOD
 
-/* The global variables below are used to drive control flow in the source functions. */
-int CWE114_Process_Control__w32_char_environment_22_goodG2B1Global = 0;
-int CWE114_Process_Control__w32_char_environment_22_goodG2B2Global = 0;
-
-/* goodG2B1() - use goodsource and badsink by setting the static variable to false instead of true */
-char * CWE114_Process_Control__w32_char_environment_22_goodG2B1Source(char * data);
-
+/* goodG2B1() - use goodsource and badsink by changing the staticReturnsTrue() to staticReturnsFalse() */
 static void goodG2B1()
 {
-    char * data;
-    char dataBuffer[100] = "";
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
     data = dataBuffer;
-    CWE114_Process_Control__w32_char_environment_22_goodG2B1Global = 0; /* false */
-    data = CWE114_Process_Control__w32_char_environment_22_goodG2B1Source(data);
+    if(staticReturnsFalse())
     {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine("Benign, fixed string");
+    }
+    else
+    {
+        /* FIX: Use a fixed file name */
+        wcscat(data, L"file.txt");
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
     }
 }
 
-/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if in the source function */
-char * CWE114_Process_Control__w32_char_environment_22_goodG2B2Source(char * data);
-
+/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if statement */
 static void goodG2B2()
 {
-    char * data;
-    char dataBuffer[100] = "";
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
     data = dataBuffer;
-    CWE114_Process_Control__w32_char_environment_22_goodG2B2Global = 1; /* true */
-    data = CWE114_Process_Control__w32_char_environment_22_goodG2B2Source(data);
+    if(staticReturnsTrue())
     {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
+        /* FIX: Use a fixed file name */
+        wcscat(data, L"file.txt");
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
     }
 }
 
-void CWE114_Process_Control__w32_char_environment_22_good()
+void good()
 {
     goodG2B1();
     goodG2B2();
@@ -1125,13 +2526,16 @@ void CWE114_Process_Control__w32_char_environment_22_good()
 
 #endif /* OMITGOOD */
 
+} /* close namespace */
+
 /* Below is the main(). It is only used when building this testcase on
- * its own for testing or for building a binary to use in testing binary
- * analysis tools. It is not used when compiling all the testcases as one
- * application, which is how source code analysis tools are tested.
- */
+   its own for testing or for building a binary to use in testing binary
+   analysis tools. It is not used when compiling all the testcases as one
+   application, which is how source code analysis tools are tested. */
 
 #ifdef INCLUDEMAIN
+
+using namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08; /* so that we can use good and bad easily */
 
 int main(int argc, char * argv[])
 {
@@ -1139,12 +2543,12 @@ int main(int argc, char * argv[])
     srand( (unsigned)time(NULL) );
 #ifndef OMITGOOD
     printLine("Calling good()...");
-    CWE114_Process_Control__w32_char_environment_22_good();
+    good();
     printLine("Finished good()");
 #endif /* OMITGOOD */
 #ifndef OMITBAD
     printLine("Calling bad()...");
-    CWE114_Process_Control__w32_char_environment_22_bad();
+    bad();
     printLine("Finished bad()");
 #endif /* OMITBAD */
     return 0;
@@ -1154,336 +2558,85 @@ int main(int argc, char * argv[])
 </code></pre>
 </div>
 <div>
-	<h3 class="file">104 /Code/000061940/CWE114_Process_Control__w32_char_connect_socket_01.c strlen 59</h3>
-	<pre class="line-numbers" data-line="45,47,48,49,59,86,87,92,94,95,97,99,100,102,121,122,124"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE114_Process_Control__w32_char_connect_socket_01.c
-Label Definition File: CWE114_Process_Control__w32.label.xml
-Template File: sources-sink-01.tmpl.c
+	<h3 class="file">[Arithmetic Expression] 242 /home/user/Code/000091363/CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08.cpp data 77</h3>
+	<pre class="line-numbers" data-line="55,57,58,59,60,40,42,64,65,67,70,75,77"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08.cpp
+Label Definition File: CWE23_Relative_Path_Traversal.label.xml
+Template File: sources-sink-08.tmpl.cpp
 */
 /*
  * @description
- * CWE: 114 Process Control
- * BadSource: connect_socket Read data using a connect socket (client side)
- * GoodSource: Hard code the full pathname to the library
- * Sink:
- *    BadSink : Load a dynamic link library
- * Flow Variant: 01 Baseline
+ * CWE: 23 Relative Path Traversal
+ * BadSource: environment Read input from an environment variable
+ * GoodSource: Use a fixed file name
+ * Sink: ofstream
+ *    BadSink : Open the file named in data using ofstream::open()
+ * Flow Variant: 08 Control flow: if(staticReturnsTrue()) and if(staticReturnsFalse())
  *
  * */
 
 #include "std_testcase.h"
 
+#ifdef _WIN32
+#define BASEPATH L"c:\\temp\\"
+#else
 #include <wchar.h>
-
-#ifdef _WIN32
-#include <winsock2.h>
-#include <windows.h>
-#include <direct.h>
-#pragma comment(lib, "ws2_32") /* include ws2_32.lib when linking */
-#define CLOSE_SOCKET closesocket
-#else /* NOT _WIN32 */
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-#define CLOSE_SOCKET close
-#define SOCKET int
+#define BASEPATH L"/tmp/"
 #endif
 
-#define TCP_PORT 27015
-#define IP_ADDRESS "127.0.0.1"
+#define ENV_VARIABLE L"ADD"
 
+#ifdef _WIN32
+#define GETENV _wgetenv
+#else
+#define GETENV getenv
+#endif
 
-#ifndef OMITBAD
+#include <fstream>
+using namespace std;
 
-void CWE114_Process_Control__w32_char_connect_socket_01_bad()
+/* The two function below always return the same value, so a tool
+   should be able to identify that calls to the functions will always
+   return a fixed value. */
+static int staticReturnsTrue()
 {
-    char * data;
-    char dataBuffer[100] = "";
-    data = dataBuffer;
-    {
-#ifdef _WIN32
-        WSADATA wsaData;
-        int wsaDataInit = 0;
-#endif
-        int recvResult;
-        struct sockaddr_in service;
-        char *replace;
-        SOCKET connectSocket = INVALID_SOCKET;
-        size_t dataLen = strlen(data);
-        do
-        {
-#ifdef _WIN32
-            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
-            {
-                break;
-            }
-            wsaDataInit = 1;
-#endif
-            /* POTENTIAL FLAW: Read data using a connect socket */
-            connectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-            if (connectSocket == INVALID_SOCKET)
-            {
-                break;
-            }
-            memset(&service, 0, sizeof(service));
-            service.sin_family = AF_INET;
-            service.sin_addr.s_addr = inet_addr(IP_ADDRESS);
-            service.sin_port = htons(TCP_PORT);
-            if (connect(connectSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
-            {
-                break;
-            }
-            /* Abort on error or the connection was closed, make sure to recv one
-             * less char than is in the recv_buf in order to append a terminator */
-            /* Abort on error or the connection was closed */
-            recvResult = recv(connectSocket, (char *)(data + dataLen), sizeof(char) * (100 - dataLen - 1), 0);
-            if (recvResult == SOCKET_ERROR || recvResult == 0)
-            {
-                break;
-            }
-            /* Append null terminator */
-            data[dataLen + recvResult / sizeof(char)] = '\0';
-            /* Eliminate CRLF */
-            replace = strchr(data, '\r');
-            if (replace)
-            {
-                *replace = '\0';
-            }
-            replace = strchr(data, '\n');
-            if (replace)
-            {
-                *replace = '\0';
-            }
-        }
-        while (0);
-        if (connectSocket != INVALID_SOCKET)
-        {
-            CLOSE_SOCKET(connectSocket);
-        }
-#ifdef _WIN32
-        if (wsaDataInit)
-        {
-            WSACleanup();
-        }
-#endif
-    }
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
+    return 1;
 }
 
-#endif /* OMITBAD */
-
-#ifndef OMITGOOD
-
-/* goodG2B uses the GoodSource with the BadSink */
-static void goodG2B()
+static int staticReturnsFalse()
 {
-    char * data;
-    char dataBuffer[100] = "";
-    data = dataBuffer;
-    /* FIX: Specify the full pathname for the library */
-    strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
-}
-
-void CWE114_Process_Control__w32_char_connect_socket_01_good()
-{
-    goodG2B();
-}
-
-#endif /* OMITGOOD */
-
-/* Below is the main(). It is only used when building this testcase on
- * its own for testing or for building a binary to use in testing binary
- * analysis tools. It is not used when compiling all the testcases as one
- * application, which is how source code analysis tools are tested.
- */
-
-#ifdef INCLUDEMAIN
-
-int main(int argc, char * argv[])
-{
-    /* seed randomness */
-    srand( (unsigned)time(NULL) );
-#ifndef OMITGOOD
-    printLine("Calling good()...");
-    CWE114_Process_Control__w32_char_connect_socket_01_good();
-    printLine("Finished good()");
-#endif /* OMITGOOD */
-#ifndef OMITBAD
-    printLine("Calling bad()...");
-    CWE114_Process_Control__w32_char_connect_socket_01_bad();
-    printLine("Finished bad()");
-#endif /* OMITBAD */
     return 0;
 }
 
-#endif
-</code></pre>
-</div>
-<div>
-	<h3 class="file">109 /Code/000061940/CWE114_Process_Control__w32_char_connect_socket_01.c socket 70</h3>
-	<pre class="line-numbers" data-line="45,47,48,49,52,55,56,59,63,70,71,75,76,77,78,79,86,87,92,94,95,97,99,100,102,105,106,108,121,122,124"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE114_Process_Control__w32_char_connect_socket_01.c
-Label Definition File: CWE114_Process_Control__w32.label.xml
-Template File: sources-sink-01.tmpl.c
-*/
-/*
- * @description
- * CWE: 114 Process Control
- * BadSource: connect_socket Read data using a connect socket (client side)
- * GoodSource: Hard code the full pathname to the library
- * Sink:
- *    BadSink : Load a dynamic link library
- * Flow Variant: 01 Baseline
- *
- * */
-
-#include "std_testcase.h"
-
-#include <wchar.h>
-
-#ifdef _WIN32
-#include <winsock2.h>
-#include <windows.h>
-#include <direct.h>
-#pragma comment(lib, "ws2_32") /* include ws2_32.lib when linking */
-#define CLOSE_SOCKET closesocket
-#else /* NOT _WIN32 */
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-#define CLOSE_SOCKET close
-#define SOCKET int
-#endif
-
-#define TCP_PORT 27015
-#define IP_ADDRESS "127.0.0.1"
-
+namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08
+{
 
 #ifndef OMITBAD
 
-void CWE114_Process_Control__w32_char_connect_socket_01_bad()
+void bad()
 {
-    char * data;
-    char dataBuffer[100] = "";
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
     data = dataBuffer;
+    if(staticReturnsTrue())
     {
-#ifdef _WIN32
-        WSADATA wsaData;
-        int wsaDataInit = 0;
-#endif
-        int recvResult;
-        struct sockaddr_in service;
-        char *replace;
-        SOCKET connectSocket = INVALID_SOCKET;
-        size_t dataLen = strlen(data);
-        do
         {
-#ifdef _WIN32
-            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
+            /* Append input from an environment variable to data */
+            size_t dataLen = wcslen(data);
+            wchar_t * environment = GETENV(ENV_VARIABLE);
+            /* If there is data in the environment variable */
+            if (environment != NULL)
             {
-                break;
-            }
-            wsaDataInit = 1;
-#endif
-            /* POTENTIAL FLAW: Read data using a connect socket */
-            connectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-            if (connectSocket == INVALID_SOCKET)
-            {
-                break;
-            }
-            memset(&service, 0, sizeof(service));
-            service.sin_family = AF_INET;
-            service.sin_addr.s_addr = inet_addr(IP_ADDRESS);
-            service.sin_port = htons(TCP_PORT);
-            if (connect(connectSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
-            {
-                break;
-            }
-            /* Abort on error or the connection was closed, make sure to recv one
-             * less char than is in the recv_buf in order to append a terminator */
-            /* Abort on error or the connection was closed */
-            recvResult = recv(connectSocket, (char *)(data + dataLen), sizeof(char) * (100 - dataLen - 1), 0);
-            if (recvResult == SOCKET_ERROR || recvResult == 0)
-            {
-                break;
-            }
-            /* Append null terminator */
-            data[dataLen + recvResult / sizeof(char)] = '\0';
-            /* Eliminate CRLF */
-            replace = strchr(data, '\r');
-            if (replace)
-            {
-                *replace = '\0';
-            }
-            replace = strchr(data, '\n');
-            if (replace)
-            {
-                *replace = '\0';
+                /* POTENTIAL FLAW: Read data from an environment variable */
+                wcsncat(data+dataLen, environment, FILENAME_MAX-dataLen-1);
             }
         }
-        while (0);
-        if (connectSocket != INVALID_SOCKET)
-        {
-            CLOSE_SOCKET(connectSocket);
-        }
-#ifdef _WIN32
-        if (wsaDataInit)
-        {
-            WSACleanup();
-        }
-#endif
     }
     {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
     }
 }
 
@@ -1491,45 +2644,67 @@ void CWE114_Process_Control__w32_char_connect_socket_01_bad()
 
 #ifndef OMITGOOD
 
-/* goodG2B uses the GoodSource with the BadSink */
-static void goodG2B()
+/* goodG2B1() - use goodsource and badsink by changing the staticReturnsTrue() to staticReturnsFalse() */
+static void goodG2B1()
 {
-    char * data;
-    char dataBuffer[100] = "";
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
     data = dataBuffer;
-    /* FIX: Specify the full pathname for the library */
-    strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
+    if(staticReturnsFalse())
     {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine("Benign, fixed string");
+    }
+    else
+    {
+        /* FIX: Use a fixed file name */
+        wcscat(data, L"file.txt");
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
     }
 }
 
-void CWE114_Process_Control__w32_char_connect_socket_01_good()
+/* goodG2B2() - use goodsource and badsink by reversing the blocks in the if statement */
+static void goodG2B2()
 {
-    goodG2B();
+    wchar_t * data;
+    wchar_t dataBuffer[FILENAME_MAX] = BASEPATH;
+    data = dataBuffer;
+    if(staticReturnsTrue())
+    {
+        /* FIX: Use a fixed file name */
+        wcscat(data, L"file.txt");
+    }
+    {
+        ofstream outputFile;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        outputFile.open((char *)data);
+        outputFile.close();
+    }
+}
+
+void good()
+{
+    goodG2B1();
+    goodG2B2();
 }
 
 #endif /* OMITGOOD */
 
+} /* close namespace */
+
 /* Below is the main(). It is only used when building this testcase on
- * its own for testing or for building a binary to use in testing binary
- * analysis tools. It is not used when compiling all the testcases as one
- * application, which is how source code analysis tools are tested.
- */
+   its own for testing or for building a binary to use in testing binary
+   analysis tools. It is not used when compiling all the testcases as one
+   application, which is how source code analysis tools are tested. */
 
 #ifdef INCLUDEMAIN
+
+using namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ofstream_08; /* so that we can use good and bad easily */
 
 int main(int argc, char * argv[])
 {
@@ -1537,410 +2712,12 @@ int main(int argc, char * argv[])
     srand( (unsigned)time(NULL) );
 #ifndef OMITGOOD
     printLine("Calling good()...");
-    CWE114_Process_Control__w32_char_connect_socket_01_good();
+    good();
     printLine("Finished good()");
 #endif /* OMITGOOD */
 #ifndef OMITBAD
     printLine("Calling bad()...");
-    CWE114_Process_Control__w32_char_connect_socket_01_bad();
-    printLine("Finished bad()");
-#endif /* OMITBAD */
-    return 0;
-}
-
-#endif
-</code></pre>
-</div>
-<div>
-	<h3 class="file">111 /Code/000061940/CWE114_Process_Control__w32_char_connect_socket_01.c LoadLibraryA 121</h3>
-	<pre class="line-numbers" data-line="45,47,48,49,52,55,56,59,63,70,71,75,76,77,78,79,86,87,92,105,118,121,122,124"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE114_Process_Control__w32_char_connect_socket_01.c
-Label Definition File: CWE114_Process_Control__w32.label.xml
-Template File: sources-sink-01.tmpl.c
-*/
-/*
- * @description
- * CWE: 114 Process Control
- * BadSource: connect_socket Read data using a connect socket (client side)
- * GoodSource: Hard code the full pathname to the library
- * Sink:
- *    BadSink : Load a dynamic link library
- * Flow Variant: 01 Baseline
- *
- * */
-
-#include "std_testcase.h"
-
-#include <wchar.h>
-
-#ifdef _WIN32
-#include <winsock2.h>
-#include <windows.h>
-#include <direct.h>
-#pragma comment(lib, "ws2_32") /* include ws2_32.lib when linking */
-#define CLOSE_SOCKET closesocket
-#else /* NOT _WIN32 */
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-#define CLOSE_SOCKET close
-#define SOCKET int
-#endif
-
-#define TCP_PORT 27015
-#define IP_ADDRESS "127.0.0.1"
-
-
-#ifndef OMITBAD
-
-void CWE114_Process_Control__w32_char_connect_socket_01_bad()
-{
-    char * data;
-    char dataBuffer[100] = "";
-    data = dataBuffer;
-    {
-#ifdef _WIN32
-        WSADATA wsaData;
-        int wsaDataInit = 0;
-#endif
-        int recvResult;
-        struct sockaddr_in service;
-        char *replace;
-        SOCKET connectSocket = INVALID_SOCKET;
-        size_t dataLen = strlen(data);
-        do
-        {
-#ifdef _WIN32
-            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
-            {
-                break;
-            }
-            wsaDataInit = 1;
-#endif
-            /* POTENTIAL FLAW: Read data using a connect socket */
-            connectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-            if (connectSocket == INVALID_SOCKET)
-            {
-                break;
-            }
-            memset(&service, 0, sizeof(service));
-            service.sin_family = AF_INET;
-            service.sin_addr.s_addr = inet_addr(IP_ADDRESS);
-            service.sin_port = htons(TCP_PORT);
-            if (connect(connectSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
-            {
-                break;
-            }
-            /* Abort on error or the connection was closed, make sure to recv one
-             * less char than is in the recv_buf in order to append a terminator */
-            /* Abort on error or the connection was closed */
-            recvResult = recv(connectSocket, (char *)(data + dataLen), sizeof(char) * (100 - dataLen - 1), 0);
-            if (recvResult == SOCKET_ERROR || recvResult == 0)
-            {
-                break;
-            }
-            /* Append null terminator */
-            data[dataLen + recvResult / sizeof(char)] = '\0';
-            /* Eliminate CRLF */
-            replace = strchr(data, '\r');
-            if (replace)
-            {
-                *replace = '\0';
-            }
-            replace = strchr(data, '\n');
-            if (replace)
-            {
-                *replace = '\0';
-            }
-        }
-        while (0);
-        if (connectSocket != INVALID_SOCKET)
-        {
-            CLOSE_SOCKET(connectSocket);
-        }
-#ifdef _WIN32
-        if (wsaDataInit)
-        {
-            WSACleanup();
-        }
-#endif
-    }
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
-}
-
-#endif /* OMITBAD */
-
-#ifndef OMITGOOD
-
-/* goodG2B uses the GoodSource with the BadSink */
-static void goodG2B()
-{
-    char * data;
-    char dataBuffer[100] = "";
-    data = dataBuffer;
-    /* FIX: Specify the full pathname for the library */
-    strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
-}
-
-void CWE114_Process_Control__w32_char_connect_socket_01_good()
-{
-    goodG2B();
-}
-
-#endif /* OMITGOOD */
-
-/* Below is the main(). It is only used when building this testcase on
- * its own for testing or for building a binary to use in testing binary
- * analysis tools. It is not used when compiling all the testcases as one
- * application, which is how source code analysis tools are tested.
- */
-
-#ifdef INCLUDEMAIN
-
-int main(int argc, char * argv[])
-{
-    /* seed randomness */
-    srand( (unsigned)time(NULL) );
-#ifndef OMITGOOD
-    printLine("Calling good()...");
-    CWE114_Process_Control__w32_char_connect_socket_01_good();
-    printLine("Finished good()");
-#endif /* OMITGOOD */
-#ifndef OMITBAD
-    printLine("Calling bad()...");
-    CWE114_Process_Control__w32_char_connect_socket_01_bad();
-    printLine("Finished bad()");
-#endif /* OMITBAD */
-    return 0;
-}
-
-#endif
-</code></pre>
-</div>
-<div>
-	<h3 class="file">113 /Code/000061940/CWE114_Process_Control__w32_char_connect_socket_01.c recv 86</h3>
-	<pre class="line-numbers" data-line="45,47,48,49,52,55,56,59,63,70,71,75,76,77,78,79,86,87,92,94,95,97,99,100,102,105,121,122,124"><code class="language-clike">/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE114_Process_Control__w32_char_connect_socket_01.c
-Label Definition File: CWE114_Process_Control__w32.label.xml
-Template File: sources-sink-01.tmpl.c
-*/
-/*
- * @description
- * CWE: 114 Process Control
- * BadSource: connect_socket Read data using a connect socket (client side)
- * GoodSource: Hard code the full pathname to the library
- * Sink:
- *    BadSink : Load a dynamic link library
- * Flow Variant: 01 Baseline
- *
- * */
-
-#include "std_testcase.h"
-
-#include <wchar.h>
-
-#ifdef _WIN32
-#include <winsock2.h>
-#include <windows.h>
-#include <direct.h>
-#pragma comment(lib, "ws2_32") /* include ws2_32.lib when linking */
-#define CLOSE_SOCKET closesocket
-#else /* NOT _WIN32 */
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-#define CLOSE_SOCKET close
-#define SOCKET int
-#endif
-
-#define TCP_PORT 27015
-#define IP_ADDRESS "127.0.0.1"
-
-
-#ifndef OMITBAD
-
-void CWE114_Process_Control__w32_char_connect_socket_01_bad()
-{
-    char * data;
-    char dataBuffer[100] = "";
-    data = dataBuffer;
-    {
-#ifdef _WIN32
-        WSADATA wsaData;
-        int wsaDataInit = 0;
-#endif
-        int recvResult;
-        struct sockaddr_in service;
-        char *replace;
-        SOCKET connectSocket = INVALID_SOCKET;
-        size_t dataLen = strlen(data);
-        do
-        {
-#ifdef _WIN32
-            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
-            {
-                break;
-            }
-            wsaDataInit = 1;
-#endif
-            /* POTENTIAL FLAW: Read data using a connect socket */
-            connectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-            if (connectSocket == INVALID_SOCKET)
-            {
-                break;
-            }
-            memset(&service, 0, sizeof(service));
-            service.sin_family = AF_INET;
-            service.sin_addr.s_addr = inet_addr(IP_ADDRESS);
-            service.sin_port = htons(TCP_PORT);
-            if (connect(connectSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
-            {
-                break;
-            }
-            /* Abort on error or the connection was closed, make sure to recv one
-             * less char than is in the recv_buf in order to append a terminator */
-            /* Abort on error or the connection was closed */
-            recvResult = recv(connectSocket, (char *)(data + dataLen), sizeof(char) * (100 - dataLen - 1), 0);
-            if (recvResult == SOCKET_ERROR || recvResult == 0)
-            {
-                break;
-            }
-            /* Append null terminator */
-            data[dataLen + recvResult / sizeof(char)] = '\0';
-            /* Eliminate CRLF */
-            replace = strchr(data, '\r');
-            if (replace)
-            {
-                *replace = '\0';
-            }
-            replace = strchr(data, '\n');
-            if (replace)
-            {
-                *replace = '\0';
-            }
-        }
-        while (0);
-        if (connectSocket != INVALID_SOCKET)
-        {
-            CLOSE_SOCKET(connectSocket);
-        }
-#ifdef _WIN32
-        if (wsaDataInit)
-        {
-            WSACleanup();
-        }
-#endif
-    }
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
-}
-
-#endif /* OMITBAD */
-
-#ifndef OMITGOOD
-
-/* goodG2B uses the GoodSource with the BadSink */
-static void goodG2B()
-{
-    char * data;
-    char dataBuffer[100] = "";
-    data = dataBuffer;
-    /* FIX: Specify the full pathname for the library */
-    strcpy(data, "C:\\Windows\\System32\\winsrv.dll");
-    {
-        HMODULE hModule;
-        /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
-         * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
-        if (hModule != NULL)
-        {
-            FreeLibrary(hModule);
-            printLine("Library loaded and freed successfully");
-        }
-        else
-        {
-            printLine("Unable to load library");
-        }
-    }
-}
-
-void CWE114_Process_Control__w32_char_connect_socket_01_good()
-{
-    goodG2B();
-}
-
-#endif /* OMITGOOD */
-
-/* Below is the main(). It is only used when building this testcase on
- * its own for testing or for building a binary to use in testing binary
- * analysis tools. It is not used when compiling all the testcases as one
- * application, which is how source code analysis tools are tested.
- */
-
-#ifdef INCLUDEMAIN
-
-int main(int argc, char * argv[])
-{
-    /* seed randomness */
-    srand( (unsigned)time(NULL) );
-#ifndef OMITGOOD
-    printLine("Calling good()...");
-    CWE114_Process_Control__w32_char_connect_socket_01_good();
-    printLine("Finished good()");
-#endif /* OMITGOOD */
-#ifndef OMITBAD
-    printLine("Calling bad()...");
-    CWE114_Process_Control__w32_char_connect_socket_01_bad();
+    bad();
     printLine("Finished bad()");
 #endif /* OMITBAD */
     return 0;
