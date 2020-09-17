@@ -20,8 +20,6 @@
     var e = f("#siropuChatEditor");
     var c = e.find("form");
     var n = c.find('textarea[name="message_html"]');
-    n.froalaEditor = n[0]["data-froala.editor"];
-    console.log(n.FroalaEditor);
     var m = c.find('button[type="submit"]');
     var z = f("#siropuChatBar");
     var y = f("#siropuChatBarMessageContainer");
@@ -1308,6 +1306,9 @@
         _initSubmitForm: function() {
             var G = this;
             n.on("froalaEditor.initialized", function(J, H) {
+		console.log("On init");
+		n.froalaEditor = H; //n[0]["data-froala.editor"];
+		console.log(H);
                 var I = n.data("buttons-remove");
                 if (!XF.isEditorEnabled() && I.match(/xfBbCode/)) {
                     XF.setIsEditorEnabled(true)
