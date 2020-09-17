@@ -17,6 +17,7 @@
           a.ed.events.bindClick(b, b, d)
         }
       });
+      console.log(b);
       b.events.on('keydown', XF.proxy(this, 'keydown'), !0);
       b.events.on('keyup', XF.proxy(this, 'keyup'), !0);
       b.events.on('click blur', function () {
