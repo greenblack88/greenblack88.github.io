@@ -156,7 +156,7 @@
       edx = e("textarea");
       console.log(edx);
       edx.froalaEditor = edx[0]["data-froala.editor"];
-      e.trigger("editor-initialized", edx[0]["data-froala.editor"]);
+      edx.trigger("editor-initialized", edx[0]["data-froala.editor"]);
     },
     firstStart: function (b) {
       e.FE.PLUGINS.bbCode = function (a) {
