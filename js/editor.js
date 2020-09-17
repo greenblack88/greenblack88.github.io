@@ -1305,7 +1305,7 @@
         },
         _initSubmitForm: function() {
             var G = this;
-            n.on("froalaEditor.initialized", function(J, H) {
+            n.on("initialized", function(J, H) {
 		console.log("On init");
 		n.froalaEditor = H; //n[0]["data-froala.editor"];
 		console.log(H);
@@ -1643,7 +1643,7 @@
             var H = this;
             var I = this.$target;
             var G = I.find("textarea");
-            G.on("froalaEditor.initialized", function(K, J) {
+            G.on("initialized", function(K, J) {
                 J.opts.pastePlain = true;
                 J.opts.multiLine = H.options.multiLine;
                 J.opts.htmlAllowedTags = ["img", "a", "table", "tr", "td"];
