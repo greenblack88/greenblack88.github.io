@@ -1645,6 +1645,7 @@
             var G = I.find("textarea");
             G.on("editor-initialized", function(K, J) {
 		console.log(J);
+		G.froalaEditor = J;
                 J.opts.pastePlain = true;
                 J.opts.multiLine = H.options.multiLine;
                 J.opts.htmlAllowedTags = ["img", "a", "table", "tr", "td"];
