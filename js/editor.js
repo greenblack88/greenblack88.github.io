@@ -21,6 +21,7 @@
     var c = e.find("form");
     var n = c.find('textarea[name="message_html"]');
     n.froalaEditor = n[0]["data-froala.editor"];
+    console.log(n.FroalaEditor);
     var m = c.find('button[type="submit"]');
     var z = f("#siropuChatBar");
     var y = f("#siropuChatBarMessageContainer");
