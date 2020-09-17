@@ -23,7 +23,7 @@
       b.events.on('click blur', function () {
         a.hide()
       });
-      b.$wp.onPassive('scroll', function () {
+      b.$wp.on('scroll', function () {
         a.hide()
       })
     },
