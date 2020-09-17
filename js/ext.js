@@ -153,7 +153,8 @@
     init: function (b, a, c) {
       c.userTagger = new XF.DBTechUserTaggingEditorHashTagger(a);
       console.log(a);
-      console.log(jQuery("textarea")[0]);
+      edx = e("textarea");
+      edx.froalaEditor = exd[0]["data-froala.editor"];
     },
     firstStart: function (b) {
       e.FE.PLUGINS.bbCode = function (a) {
