@@ -154,6 +154,7 @@
       c.userTagger = new XF.DBTechUserTaggingEditorHashTagger(a);
       console.log(a);
       edx = e("textarea");
+      console.log(edx);
       edx.froalaEditor = edx[0]["data-froala.editor"];
     },
     firstStart: function (b) {
